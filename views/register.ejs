@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/header') %>
+    <title>Kleiba | Register</title>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+    <h1>Register now!</h1>
+    <form action="/register" method="post">
+        <label for="username">Enter Username</label>
+        <input type="text" name="username" required>
+        <label for="password">Enter password </label>
+        <input type="password" name="password" required>
+        <button>Submit</button>
+    </form>
+    <a href="login">Login?</a>
+</body>
+</html>
