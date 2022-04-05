@@ -60,7 +60,7 @@ input{
     width:100%;
     padding:0.5rem;
 }
-.added{
+.positive{
     color:#0F0;
 }
 /* search page*/
@@ -90,7 +90,7 @@ td{
 .fa-trash-can{
     color: #EE0000;
 }
-.notfound{
+.negative{
     margin-top:1rem;
     color: red;
 }
@@ -115,6 +115,12 @@ td{
 #edit-form{
     position:fixed;
     top:25%;
+}
+
+/* Delete data */
+.delete-btn{
+    border:none;
+    background:none;
 }
 /* form size - responsive */
 @media(max-width:1095px){

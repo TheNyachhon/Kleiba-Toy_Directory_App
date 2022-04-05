@@ -119,11 +119,11 @@ app.get('/add', (req, res) => {
 })
 // Receiving toy data input from form
 app.post('/add', async (req, res) => {
-    const { id, name ,desc} = req.body
+    const { id, name, desc } = req.body
     const newToy = new Toys({
         toyid: id,
-        name:name.toLowerCase(),
-        desc:desc.toLowerCase()
+        name: name.toLowerCase(),
+        desc: desc.toLowerCase()
     })
     await newToy.save()
     req.flash('message', 'added')
@@ -134,8 +134,7 @@ app.get('/search', (req, res) => {
     if (!req.session.user_id) {
         return res.redirect('/login')
     }
-    // req.flash('toyInfo','not found')
-    res.render('search', { toyInfo: req.flash('toyInfo') })
+    res.render('search', { toyInfo: req.flash('toyInfo'), toyDeleted: req.flash('toyDeleted') })
 })
 // Receiving toy data input from form to search
 app.post('/search', async (req, res) => {
@@ -145,26 +144,42 @@ app.post('/search', async (req, res) => {
             if (toyData != null) {
                 // console.log(toyData)
                 req.flash('toyInfo', 'found')
-                return res.render('search', { toyData, toyInfo: req.flash('toyInfo') })
+                return res.render('search', { toyData, toyInfo: req.flash('toyInfo'),toyDeleted: req.flash('toyDeleted')})
             }
             req.flash('toyInfo', 'not found')
             res.redirect('search')
 
         })
-        .catch(e=>{
+        .catch(e => {
             console.log('error')
             console.log(e)
         })
 })
 
 // Toy data modify
-app.post('/edit',async(req,res)=>{
-    const {id,name,desc } = req.body
-    await Toys.findOneAndUpdate({ toyid: id }, {name:name.toLowerCase(),desc:desc.toLowerCase()})
+app.post('/edit', async (req, res) => {
+    const { id, name, desc } = req.body
+    await Toys.findOneAndUpdate({ toyid: id }, { name: name.toLowerCase(), desc: desc.toLowerCase() })
     res.redirect('search')
 })
 
-
+// Delete toy
+app.post('/delete', async (req, res) => {
+    const { id } = req.body
+    await Toys.deleteOne({ toyid: id })
+        .then(toyData => {
+            console.log('data deleted')
+            console.log(toyData)
+            req.flash('toyDeleted', 'true')
+            console.log("The deleted value is "+req.flash('toyDeleted'))
+            res.redirect('search')
+        })
+        .catch(e => {
+            console.log('error')
+            console.log(e)
+        })
+  
+})
 app.listen(process.env.PORT, () => {
     console.log('Listening on 3000!')
 })
