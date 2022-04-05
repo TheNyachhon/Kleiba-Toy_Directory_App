@@ -62,17 +62,23 @@ app.get('/register', checkSession, (req, res) => {
 // Registration
 app.post('/register', async (req, res) => {
     const { username, password } = req.body
-    const hashedPw = await bcrypt.hash(password, 12)
-    console.log(username)
-    console.log(hashedPw)
-    const newUser = new Users({
-        username,
-        password: hashedPw
-    })
-    console.group(newUser)
-    await newUser.save()
-    req.session.user_id = newUser._id
-    res.redirect('/home')
+    const foundUser = await Users.findAndAuthenticate(username, password)
+    if (foundUser) {
+        req.session.user_id = foundUser._id
+        res.redirect('/home')
+    } else {
+        const hashedPw = await bcrypt.hash(password, 12)
+        console.log(username)
+        console.log(hashedPw)
+        const newUser = new Users({
+            username,
+            password: hashedPw
+        })
+        console.group(newUser)
+        await newUser.save()
+        req.session.user_id = newUser._id
+        res.redirect('/home')
+    }
 })
 
 //Opens up login page. If already logged in, opens up home page
@@ -144,7 +150,7 @@ app.post('/search', async (req, res) => {
             if (toyData != null) {
                 // console.log(toyData)
                 req.flash('toyInfo', 'found')
-                return res.render('search', { toyData, toyInfo: req.flash('toyInfo'),toyDeleted: req.flash('toyDeleted')})
+                return res.render('search', { toyData, toyInfo: req.flash('toyInfo'), toyDeleted: req.flash('toyDeleted') })
             }
             req.flash('toyInfo', 'not found')
             res.redirect('search')
@@ -171,14 +177,14 @@ app.post('/delete', async (req, res) => {
             console.log('data deleted')
             console.log(toyData)
             req.flash('toyDeleted', 'true')
-            console.log("The deleted value is "+req.flash('toyDeleted'))
+            console.log("The deleted value is " + req.flash('toyDeleted'))
             res.redirect('search')
         })
         .catch(e => {
             console.log('error')
             console.log(e)
         })
-  
+
 })
 app.listen(process.env.PORT, () => {
     console.log('Listening on 3000!')
