@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/header') %>
+        <title>Kleiba | Add Toy</title>
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+    <main>
+        <form action="/add" method="post" class="form-input">
+            <%if(message=='added'){%>
+                <!-- if message is set to added, the following code is run -->
+                <div class="added">Toy added successfully</div>
+            <%}%>
+            <div class="input">
+                <label for="id">Enter toy id</label>
+                <input type="text" name="id" required>
+            </div>
+            <div class="input">
+                <label for="name">Enter toy name</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="input">
+                <label for="name">Enter toy description</label>
+                <input type="text" name="desc" required>
+            </div>
+            <button>Add Toy</button>
+        </form>
+    </main>
+</body>
+
+</html>
