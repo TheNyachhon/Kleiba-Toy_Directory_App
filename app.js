@@ -31,8 +31,14 @@ app.use(session({
     saveUninitialized: false
 }))
 
+// Dotenv
+require('dotenv').config()
+
 //connecting to database
-mongoose.connect('mongodb://localhost:27017/Klieba-Toy_Directory_App')
+// mongoose.connect('mongodb://localhost:27017/Klieba-Toy_Directory_App')
+// Database connection
+const connectionURL = process.env.url
+mongoose.connect(connectionURL)
     .then(() => {
         console.log("Connected to Database!")
     })
@@ -159,6 +165,6 @@ app.post('/edit',async(req,res)=>{
 })
 
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     console.log('Listening on 3000!')
 })
