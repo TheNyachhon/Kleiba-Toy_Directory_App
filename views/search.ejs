@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/header') %>
+        <title>Kleiba | Search Toy</title>
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+        <main>
+            <form action="/search" method="post" class="form-input">
+                <div class="input">
+                    <label for="name">Enter toy name</label>
+                    <input type="text" name="name">
+                </div>
+                <button>Search Toy</button>
+            </form>
+            <div class="result">
+                <% if(toyInfo=='found' ){%>
+                    <table>
+                        <thead>
+                            <th>Toy ID</th>
+                            <th>Toy Name</th>
+                            <th>Description</th>
+                            <th>Modify</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <%=toyData.toyid%>
+                                </td>
+                                <td>
+                                    <%=toyData.name%>
+                                </td>
+                                <td>
+                                    <%=toyData.desc%>
+                                </td>
+                                <td>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </td>
+                                <td>
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Form to edit data -->
+                    <div id="coverup" class="hidden">
+                        <form action="/edit" method="post" id="edit-form" class="form-input hidden">
+                            <div class="input close">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                            <input type="text" hidden name="id" value='<%=toyData.toyid%>'>
+                            <div class="input">
+                                <label for="name">Toy Name</label>
+                                <input type="text" name="name" value='<%=toyData.name%>' required>
+                            </div>
+                            <div class="input">
+                                <label for="desc">Description</label>
+                                <input type="text" name="desc" value='<%=toyData.desc%>' required>
+                            </div>
+                            <button>Modify Values</button>
+                        </form>
+                    </div>
+                    <!--  -->
+                    <%}else if(toyInfo=='not found' ){%>
+                        <div class="notfound">
+                            Searched toy not found! please try again
+                        </div>
+                        <%}%>
+            </div>
+        </main>
+        <script src="/index.js"></script>
+</body>
+
+</html>
